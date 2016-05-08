@@ -2,9 +2,11 @@
 
 {% block body %}
 
-    <a href="{{ path('todo_list') }}" title="Back to the list" class="btn btn-default ">Back to the list</a>
-
-    <hr>
+    <ol class="breadcrumb">
+        <li><a href="{{ path('todo_list') }}" title="Home page">Home</a></li>
+        <li><a href="{{ path('todo_list') }}" title="Task list">Task list</a></li>
+        <li class="active">Details</li>
+    </ol>
 
     <h2 class="page-header">{{ todo.name }}</h2>
 

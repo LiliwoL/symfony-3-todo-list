@@ -1,6 +1,11 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    <ol class="breadcrumb">
+        <li><a href="{{ path('todo_list') }}" title="Home page">Home</a></li>
+        <li class="active">Task list</li>
+    </ol>
+
     <table class="table table-striped">
         <thead>
         <tr>
@@ -16,16 +21,20 @@
 
         <h2 class="page-header">Task List</h2>
 
-        {% for todo in todos %}
-        <tr>
-            <th scope="row">{{ todo.id }}</th>
-            <td>{{ todo.name }}</td>
-            <td>{{ todo.dueDate|date('F j, Y, g:i a') }}</td>
-            <td><a href="{{ path('todo_details', {'id': todo.id}) }}" class="btn btn-success" title="View task">View</a></td>
-            <td><a href="{{ path('todo_edit', {'id': todo.id}) }}" class="btn btn-primary" title="Edit task">Edit</a></td>
-            <td><a href="{{ path('todo_delete', {'id': todo.id}) }}" class="btn btn-danger" title="Delete task">Delete</a></td>
-        </tr>
-        {% endfor %}
+        {% if todos is defined %}
+            {% for todo in todos %}
+            <tr>
+                <th scope="row">{{ todo.id }}</th>
+                <td>{{ todo.name }}</td>
+                <td>{{ todo.dueDate|date('F j, Y, g:i a') }}</td>
+                <td><a href="{{ path('todo_details', {'id': todo.id}) }}" class="btn btn-success" title="View task">View</a></td>
+                <td><a href="{{ path('todo_edit', {'id': todo.id}) }}" class="btn btn-primary" title="Edit task">Edit</a></td>
+                <td><a href="{{ path('todo_delete', {'id': todo.id}) }}" class="btn btn-danger" title="Delete task">Delete</a></td>
+            </tr>
+            {% endfor %}
+        {% else %}
+            No
+        {% endif %}
         </tbody>
     </table>
 {% endblock %}

@@ -2,11 +2,7 @@
 
 namespace AppBundle\Controller;
 
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use AppBundle\Form\TodoType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use AppBundle\Entity\Todo;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -42,30 +38,19 @@ class TodoController extends Controller
     {
         $todo = new Todo();
 
-        $form = $this->createFormBuilder($todo)
-                     ->add('name', TextType::class, array('attr' => array('class' => 'form-control')))
-                     ->add('category', TextType::class, array('attr' => array('class' => 'form-control')))
-                     ->add('description', TextareaType::class, array('attr' => array('class' => 'form-control')))
-                     ->add('priority', ChoiceType::class, array('choices' => array('Low' => 'Low', 'Normal' => 'Normal', 'High' => 'HIgh'), 'attr' => array('class' => 'form-control')))
-                     ->add('due_date', DateTimeType::class, array('attr' => array('class' => 'formcontrol')))
-                     ->add('save', SubmitType::class, array('label' => 'Create task', 'attr' => array('class' => 'btn btn-primary')))
-                     ->getForm();
+        $form = $this->createForm(TodoType::class, $todo);
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() and $form->isValid()) {
-            $name = $form['name']->getData();
-            $category = $form['category']->getData();
-            $description = $form['description']->getData();
-            $priority = $form['priority']->getData();
-            $due_date = $form['due_date']->getData();
 
             $now = new \DateTime('now');
 
-            $todo->setName($name);
-            $todo->setCategory($category);
-            $todo->setDescription($description);
-            $todo->setPriority($priority);
-            $todo->setDueDate($due_date);
+            $todo->setName($form['name']->getData());
+            $todo->setCategory($form['category']->getData());
+            $todo->setDescription($form['description']->getData());
+            $todo->setPriority($form['priority']->getData());
+            $todo->setDueDate($form['due_date']->getData());
             $todo->setCreateDate($now);
 
             $em = $this->getDoctrine()->getManager();
@@ -106,31 +91,19 @@ class TodoController extends Controller
         $todo->setDueDate($todo->getDueDate());
         $todo->setCreateDate($now);
 
-        $form = $this->createFormBuilder($todo)
-            ->add('name', TextType::class, array('attr' => array('class' => 'form-control')))
-            ->add('category', TextType::class, array('attr' => array('class' => 'form-control')))
-            ->add('description', TextareaType::class, array('attr' => array('class' => 'form-control')))
-            ->add('priority', ChoiceType::class, array('choices' => array('Low' => 'Low', 'Normal' => 'Normal', 'High' => 'HIgh'), 'attr' => array('class' => 'form-control')))
-            ->add('due_date', DateTimeType::class, array('attr' => array('class' => 'formcontrol')))
-            ->add('save', SubmitType::class, array('label' => 'Edit task', 'attr' => array('class' => 'btn btn-primary')))
-            ->getForm();
+        $form = $this->createForm(TodoType::class, $todo);
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() and $form->isValid()) {
-            $name = $form['name']->getData();
-            $category = $form['category']->getData();
-            $description = $form['description']->getData();
-            $priority = $form['priority']->getData();
-            $due_date = $form['due_date']->getData();
-
             $em = $this->getDoctrine()->getManager();
-            $todo = $em->getRepository('AppBundle:Todo')->find($id);
 
-            $todo->setName($name);
-            $todo->setCategory($category);
-            $todo->setDescription($description);
-            $todo->setPriority($priority);
-            $todo->setDueDate($due_date);
+            $todo = $em->getRepository('AppBundle:Todo')->find($id);
+            $todo->setName($form['name']->getData());
+            $todo->setCategory($form['category']->getData());
+            $todo->setDescription($form['description']->getData());
+            $todo->setPriority($form['priority']->getData());
+            $todo->setDueDate($form['due_date']->getData());
             $todo->setCreateDate($now);
 
             $em->flush();
@@ -175,11 +148,7 @@ class TodoController extends Controller
     public function deleteAction($id)
     {
         $em = $this->getDoctrine()->getManager();
-
-        $todo = $this->getDoctrine()->getRepository('AppBundle:Todo')->find($id);
-
-        $em->remove($todo);
-
+        $em->remove( $this->getDoctrine()->getRepository('AppBundle:Todo')->find($id) );
         $em->flush();
 
         $this->addFlash(

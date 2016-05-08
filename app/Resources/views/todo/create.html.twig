@@ -1,6 +1,12 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    <ol class="breadcrumb">
+        <li><a href="{{ path('todo_list') }}" title="Home page">Home</a></li>
+        <li><a href="{{ path('todo_list') }}" title="">Tasks</a></li>
+        <li class="active">Create</li>
+    </ol>
+
     <h2 class="page-header">Add Task</h2>
 
     {{ form_start(form) }}
