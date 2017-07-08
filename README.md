@@ -1,10 +1,10 @@
-# TODO List
+# Symfony 3 TODO List
 
 Just another TODO app to show some basic and new features on Symfony 3.
 
 ## Installation
 
-	composer installù
+	composer install
 	
 ## Run the server
    
@@ -30,13 +30,14 @@ I have used the following comamnds, let me write a little note for me to remembe
 
 ## Unit tests
 
+Run tests with PHPUnit:
+
     phpunit
 
 ## TODO
 
 - On the TODO list and details, check if the todo variable is empty
 - Add the submit button on the view, not on the model or controller
-- Set class properties in the view instead on the form object -> http://stackoverflow.com/questions/6734821/how-to-set-a-class-attribute-to-a-symfony2-form-input
 - render a form with a generic form cycle on elements
 - Datetime field css
 - Breadcrumbs, add a bundle or set it manually
